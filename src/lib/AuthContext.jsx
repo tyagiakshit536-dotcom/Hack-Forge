@@ -3,37 +3,30 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
-  const [isLoadingPublicSettings, setIsLoadingPublicSettings] = useState(true);
+  const [user, setUser] = useState({ id: 'local-user', name: 'Local User' });
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isLoadingAuth, setIsLoadingAuth] = useState(false);
+  const [isLoadingPublicSettings, setIsLoadingPublicSettings] = useState(false);
   const [authError, setAuthError] = useState(null);
-  const [appPublicSettings, setAppPublicSettings] = useState({ public_settings: {} });
+  const [appPublicSettings, setAppPublicSettings] = useState(null);
 
   useEffect(() => {
     checkAppState();
   }, []);
 
   const checkAppState = async () => {
-    setIsLoadingPublicSettings(true);
-    setIsLoadingAuth(true);
-    setAuthError(null);
-
-    // Base44 export replacement: this app has no auth/database requirements.
-    setUser(null);
-    setIsAuthenticated(false);
-    setAppPublicSettings({ public_settings: {} });
-
     setIsLoadingPublicSettings(false);
     setIsLoadingAuth(false);
   };
 
-  const logout = () => {
+  const logout = (shouldRedirect = true) => {
     setUser(null);
     setIsAuthenticated(false);
   };
 
-  const navigateToLogin = () => {};
+  const navigateToLogin = () => {
+    // No-op for standalone app
+  };
 
   return (
     <AuthContext.Provider value={{ 

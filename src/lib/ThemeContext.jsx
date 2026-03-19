@@ -1,151 +1,143 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 export const THEMES = {
   dark: {
-    name: 'Dark',
-    emoji: '🌑',
-    vars: {
-      '--background': '240 15% 4%',
-      '--foreground': '210 40% 96%',
-      '--card': '240 12% 8%',
-      '--card-foreground': '210 40% 96%',
-      '--primary': '190 100% 60%',
-      '--primary-foreground': '240 15% 4%',
-      '--secondary': '270 80% 65%',
-      '--secondary-foreground': '210 40% 96%',
-      '--muted': '240 10% 14%',
-      '--muted-foreground': '210 20% 55%',
-      '--accent': '320 80% 60%',
-      '--accent-foreground': '210 40% 96%',
-      '--border': '240 10% 18%',
-      '--input': '240 10% 18%',
-      '--ring': '190 100% 60%',
-    }
+    name: "Dark",
+    icon: "◑",
+    bg: "#020408",
+    bgGrad: "radial-gradient(ellipse at 20% 50%, #0a0f1e 0%, #020408 60%), radial-gradient(ellipse at 80% 20%, #0d0520 0%, transparent 50%)",
+    primary: "#00d4ff",
+    secondary: "#7b2fff",
+    accent: "#ff2d78",
+    text: "#e2e8f0",
+    muted: "#4a5568",
+    cardBg: "rgba(10,15,30,0.85)",
+    border: "rgba(0,212,255,0.3)",
+    particleColor: "#00d4ff",
+  },
+  original: {
+    name: "Original",
+    icon: "◈",
+    bg: "#000",
+    bgGrad: "radial-gradient(ellipse at 50% 50%, #0a0015 0%, #000 70%)",
+    primary: "#ff00ff",
+    secondary: "#00ffff",
+    accent: "#ffff00",
+    text: "#e0e0e0",
+    muted: "#555",
+    cardBg: "rgba(0,0,0,0.8)",
+    border: "rgba(255,0,255,0.3)",
+    particleColor: "#ff00ff",
   },
   light: {
-    name: 'Light',
-    emoji: '☀️',
-    vars: {
-      '--background': '0 0% 98%',
-      '--foreground': '240 10% 10%',
-      '--card': '0 0% 100%',
-      '--card-foreground': '240 10% 10%',
-      '--primary': '200 100% 40%',
-      '--primary-foreground': '0 0% 100%',
-      '--secondary': '270 60% 55%',
-      '--secondary-foreground': '0 0% 100%',
-      '--muted': '210 20% 92%',
-      '--muted-foreground': '215 20% 45%',
-      '--accent': '320 70% 50%',
-      '--accent-foreground': '0 0% 100%',
-      '--border': '214 20% 85%',
-      '--input': '214 20% 85%',
-      '--ring': '200 100% 40%',
-    }
+    name: "Light",
+    icon: "○",
+    bg: "#f0f4ff",
+    bgGrad: "radial-gradient(ellipse at 30% 40%, #dbeafe 0%, #f0f4ff 60%), radial-gradient(ellipse at 70% 60%, #ede9fe 0%, transparent 50%)",
+    primary: "#4f46e5",
+    secondary: "#7c3aed",
+    accent: "#db2777",
+    text: "#1e1b4b",
+    muted: "#6b7280",
+    cardBg: "rgba(255,255,255,0.9)",
+    border: "rgba(79,70,229,0.3)",
+    particleColor: "#4f46e5",
   },
-  cyberpunk: {
-    name: 'Cyberpunk',
-    emoji: '⚡',
-    vars: {
-      '--background': '0 0% 2%',
-      '--foreground': '60 100% 85%',
-      '--card': '280 30% 6%',
-      '--card-foreground': '60 100% 85%',
-      '--primary': '60 100% 50%',
-      '--primary-foreground': '0 0% 0%',
-      '--secondary': '300 100% 50%',
-      '--secondary-foreground': '0 0% 0%',
-      '--muted': '280 20% 12%',
-      '--muted-foreground': '60 50% 55%',
-      '--accent': '180 100% 50%',
-      '--accent-foreground': '0 0% 0%',
-      '--border': '300 50% 20%',
-      '--input': '300 50% 20%',
-      '--ring': '60 100% 50%',
-    }
+  peaceful: {
+    name: "Peaceful",
+    icon: "◯",
+    bg: "#0a0f14",
+    bgGrad: "radial-gradient(ellipse at 40% 60%, #0d1f2d 0%, #0a0f14 70%), radial-gradient(ellipse at 60% 30%, #162032 0%, transparent 50%)",
+    primary: "#67e8f9",
+    secondary: "#a5f3fc",
+    accent: "#7dd3fc",
+    text: "#e0f2fe",
+    muted: "#4b7a8a",
+    cardBg: "rgba(10,15,20,0.85)",
+    border: "rgba(103,232,249,0.25)",
+    particleColor: "#67e8f9",
   },
   nature: {
-    name: 'Nature',
-    emoji: '🌿',
-    vars: {
-      '--background': '140 20% 6%',
-      '--foreground': '120 30% 90%',
-      '--card': '140 18% 10%',
-      '--card-foreground': '120 30% 90%',
-      '--primary': '142 70% 45%',
-      '--primary-foreground': '0 0% 0%',
-      '--secondary': '90 60% 40%',
-      '--secondary-foreground': '0 0% 100%',
-      '--muted': '140 12% 16%',
-      '--muted-foreground': '140 20% 55%',
-      '--accent': '50 80% 50%',
-      '--accent-foreground': '0 0% 0%',
-      '--border': '140 20% 20%',
-      '--input': '140 20% 20%',
-      '--ring': '142 70% 45%',
-    }
+    name: "Nature",
+    icon: "◇",
+    bg: "#030a04",
+    bgGrad: "radial-gradient(ellipse at 30% 70%, #071a09 0%, #030a04 60%), radial-gradient(ellipse at 70% 20%, #0d2410 0%, transparent 50%)",
+    primary: "#4ade80",
+    secondary: "#86efac",
+    accent: "#fbbf24",
+    text: "#d1fae5",
+    muted: "#4a7055",
+    cardBg: "rgba(3,10,4,0.85)",
+    border: "rgba(74,222,128,0.3)",
+    particleColor: "#4ade80",
   },
-  universe: {
-    name: 'Universe',
-    emoji: '🌌',
-    vars: {
-      '--background': '240 50% 3%',
-      '--foreground': '220 80% 95%',
-      '--card': '240 40% 7%',
-      '--card-foreground': '220 80% 95%',
-      '--primary': '270 100% 75%',
-      '--primary-foreground': '240 50% 3%',
-      '--secondary': '200 100% 65%',
-      '--secondary-foreground': '240 50% 3%',
-      '--muted': '240 30% 12%',
-      '--muted-foreground': '220 40% 60%',
-      '--accent': '320 100% 70%',
-      '--accent-foreground': '240 50% 3%',
-      '--border': '240 30% 18%',
-      '--input': '240 30% 18%',
-      '--ring': '270 100% 75%',
-    }
+  hacker: {
+    name: "Hacker",
+    icon: "▣",
+    bg: "#000500",
+    bgGrad: "radial-gradient(ellipse at 50% 50%, #001200 0%, #000500 70%)",
+    primary: "#00ff41",
+    secondary: "#00cc33",
+    accent: "#39ff14",
+    text: "#ccffcc",
+    muted: "#1a4d1a",
+    cardBg: "rgba(0,5,0,0.9)",
+    border: "rgba(0,255,65,0.25)",
+    particleColor: "#00ff41",
   },
-  sunset: {
-    name: 'Sunset',
-    emoji: '🌅',
-    vars: {
-      '--background': '20 30% 5%',
-      '--foreground': '30 80% 92%',
-      '--card': '20 25% 9%',
-      '--card-foreground': '30 80% 92%',
-      '--primary': '25 100% 60%',
-      '--primary-foreground': '0 0% 0%',
-      '--secondary': '350 80% 55%',
-      '--secondary-foreground': '0 0% 100%',
-      '--muted': '20 15% 15%',
-      '--muted-foreground': '30 40% 55%',
-      '--accent': '45 100% 55%',
-      '--accent-foreground': '0 0% 0%',
-      '--border': '20 20% 20%',
-      '--input': '20 20% 20%',
-      '--ring': '25 100% 60%',
-    }
+  cyberpunk: {
+    name: "Cyberpunk",
+    icon: "◆",
+    bg: "#04010f",
+    bgGrad: "radial-gradient(ellipse at 20% 80%, #1a0033 0%, #04010f 60%), radial-gradient(ellipse at 80% 20%, #001a2e 0%, transparent 50%)",
+    primary: "#f0ff00",
+    secondary: "#ff0080",
+    accent: "#00fff9",
+    text: "#fff5cc",
+    muted: "#5a4a00",
+    cardBg: "rgba(4,1,15,0.9)",
+    border: "rgba(240,255,0,0.3)",
+    particleColor: "#f0ff00",
+  },
+  alien: {
+    name: "Alien",
+    icon: "◉",
+    bg: "#000d08",
+    bgGrad: "radial-gradient(ellipse at 40% 50%, #001a10 0%, #000d08 60%), radial-gradient(ellipse at 80% 30%, #0a1500 0%, transparent 60%)",
+    primary: "#39ff9a",
+    secondary: "#00ffd5",
+    accent: "#b4ff00",
+    text: "#ccffe8",
+    muted: "#1a4d33",
+    cardBg: "rgba(0,13,8,0.9)",
+    border: "rgba(57,255,154,0.3)",
+    particleColor: "#39ff9a",
   },
 };
 
-const ThemeContext = createContext();
+const ThemeContext = createContext(null);
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState(() => localStorage.getItem('fy-theme') || 'dark');
+  const [themeName, setThemeName] = useState("dark");
+  const theme = THEMES[themeName];
 
   useEffect(() => {
-    const vars = THEMES[theme]?.vars || THEMES.dark.vars;
-    const root = document.documentElement;
-    Object.entries(vars).forEach(([key, val]) => root.style.setProperty(key, val));
-    localStorage.setItem('fy-theme', theme);
-  }, [theme]);
+    const saved = localStorage.getItem("hf_theme");
+    if (saved && THEMES[saved]) setThemeName(saved);
+  }, []);
+
+  const setTheme = (name) => {
+    setThemeName(name);
+    localStorage.setItem("hf_theme", name);
+  };
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, themes: THEMES }}>
+    <ThemeContext.Provider value={{ theme, themeName, setTheme, themes: THEMES }}>
       {children}
     </ThemeContext.Provider>
   );
 }
 
-export const useTheme = () => useContext(ThemeContext);
+export function useTheme() {
+  return useContext(ThemeContext);
+}
